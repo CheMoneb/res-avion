@@ -1,6 +1,8 @@
 <?php
 $airports = [];
-
+$handle = $handle = fopen("airports.csv", "r"); 
+$test = fgetcsv($handle, 1000, ","); 
+var_dump($test);
 if (($handle = fopen("airports.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         $airports[] = [

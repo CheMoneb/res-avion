@@ -64,6 +64,13 @@ include 'header.php';
             <label for="depart"><?php echo __("departure_city"); ?></label>
             <input type="text" class="form-control" id="depart" name="depart" required>
         </div>
+        <div>
+            <label for="depart"><?php echo __("departure_city"); ?></label>
+            <select name="depart" id="depart">
+                <!-- // foreach de tout les airports -->
+                <!-- <option value="volvo">$name</option> -->
+            </select> 
+        </div>
         <div class="form-group">
             <label for="destination"><?php echo __("destination_city"); ?></label>
             <input type="text" class="form-control" id="destination" name="destination" required>
