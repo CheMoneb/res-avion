@@ -3,11 +3,17 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+
 require_once 'db.php'; // Assurez-vous que ce fichier contient les informations de connexion à la base de données
 
 $errors = [];
-$results = [];
 $searchPerformed = false;
+
+require_once 'db.php';
+require_once 'translate.php';
+require 'get_airports.php';
+
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destination'], $_GET['date_depart_start'], $_GET['trip_type'])) {
     $depart = trim($_GET['depart']);
@@ -84,6 +90,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
         <div class="form-group">
             <label for="depart">Departure City:</label>
             <input type="text" class="form-control" id="depart" name="depart" placeholder="e.g., New York" required>
+        </div>
+        <div>
+            <label for="depart"><?php echo __("departure_city"); ?></label>
+            <select name="depart" id="depart">
+                <!-- // foreach de tout les airports -->
+                 <?php foreach($results as $result) {
+                 ?><option><?php foreach($result as $name)
+                                        echo $name;?>
+                    </option><?php
+                 }?>
+            </select> 
         </div>
         <div class="form-group">
             <label for="destination">Destination City:</label>
