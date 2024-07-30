@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once 'db.php'; // Assurez-vous que ce fichier contient les informations de connexion à la base de données
-
+require_once 'translate.php';
 $errors = [];
 $results = [];
 

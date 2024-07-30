@@ -26,6 +26,8 @@ function getFlag($lang) {
             return '/images/it.png';
         case 'ar':
             return '/images/sa.png';
+        default:
+            return '/images/us.png';
     }
 }
 ?>
@@ -47,23 +49,32 @@ function getFlag($lang) {
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="index.php"><?php echo __("Home"); ?></a>
+                <a class="nav-link" href="index.php"><?php echo __("home"); ?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="recherche_vols.php"><?php echo __("Search Flights"); ?></a>
+                <a class="nav-link" href="recherche_vols.php"><?php echo __("search_flights"); ?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="booking.php"><?php echo __("Bookings"); ?></a>
+                <a class="nav-link" href="booking.php"><?php echo __("bookings"); ?></a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="vacationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo __("Vacations"); ?>
+                    <?php echo __("vacations"); ?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="vacationsDropdown">
-                    <a class="dropdown-item" href="hotels.php"><?php echo __("Hotels"); ?></a>
-                    <a class="dropdown-item" href="car_rental.php"><?php echo __("Car Rental"); ?></a>
-                    <a class="dropdown-item" href="transport.php"><?php echo __("Transport"); ?></a>
-                    <a class="dropdown-item" href="travel_ideas.php"><?php echo __("Travel Ideas"); ?></a>
+                    <a class="dropdown-item" href="hotels.php"><?php echo __("hotels"); ?></a>
+                    <a class="dropdown-item" href="car_rental.php"><?php echo __("car_rental"); ?></a>
+                    <a class="dropdown-item" href="transport.php"><?php echo __("transport"); ?></a>
+                    <a class="dropdown-item" href="travel_ideas.php"><?php echo __("travel_ideas"); ?></a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="flightsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo __("manage_flights"); ?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="flightsDropdown">
+                    <a class="dropdown-item" href="add_flight.php"><?php echo __("add_flight"); ?></a>
+                    <a class="dropdown-item" href="manage_flights.php"><?php echo __("manage_flights"); ?></a>
                 </div>
             </li>
             <li class="nav-item dropdown">
