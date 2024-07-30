@@ -4,6 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 require_once 'db.php';
+require_once 'translate.php';
 
 $errors = [];
 

@@ -3,17 +3,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 require_once 'db.php'; // Assurez-vous que ce fichier contient les informations de connexion à la base de données
+require_once 'translate.php';
+require 'get_airports.php'; // Assuming this file fetches the list of airports
 
 $errors = [];
 $searchPerformed = false;
-
-require_once 'db.php';
-require_once 'translate.php';
-require 'get_airports.php';
-
-
+$results = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destination'], $_GET['date_depart_start'], $_GET['trip_type'])) {
     $depart = trim($_GET['depart']);
@@ -21,33 +17,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
     $date_depart_start = trim($_GET['date_depart_start']);
     $trip_type = trim($_GET['trip_type']);
     $date_return = isset($_GET['date_return']) ? trim($_GET['date_return']) : null;
-    $direct_only = isset($_GET['direct_only']) ? true : false; // Ajouter le paramètre pour les vols directs
-    $travelers = isset($_GET['travelers']) ? intval($_GET['travelers']) : 1; // Nombre de voyageurs
+    $direct_only = isset($_GET['direct_only']) ? true : false;
+    $travelers = isset($_GET['travelers']) ? intval($_GET['travelers']) : 1;
 
     // Validation des données du formulaire
     if (empty($depart)) {
-        $errors[] = "Departure City is required.";
+        $errors[] = __("departure_city_required");
     }
     if (empty($destination)) {
-        $errors[] = "Destination City is required.";
+        $errors[] = __("destination_city_required");
     }
     if (empty($date_depart_start)) {
-        $errors[] = "Departure Date is required.";
+        $errors[] = __("departure_date_required");
     }
     if ($trip_type == 'round-trip' && empty($date_return)) {
-        $errors[] = "Return Date is required for round-trip.";
+        $errors[] = __("return_date_required");
     }
     if ($travelers <= 0) {
-        $errors[] = "Number of travelers must be at least 1.";
+        $errors[] = __("number_of_travelers_required");
     }
 
     if (empty($errors)) {
-        $searchPerformed = true; // Indique que la recherche a été effectuée
-        
+        $searchPerformed = true;
+
         // Requête SQL pour rechercher les vols
         $query = "SELECT * FROM vols WHERE departure_airport = ? AND destination_airport = ? AND departure_date = ?";
         if ($direct_only) {
-            $query .= " AND direct_flight = 1"; // Filtrer les vols directs
+            $query .= " AND direct_flight = 1";
         }
         $stmt = $conn->prepare($query);
         if ($stmt) {
@@ -56,26 +52,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
             $results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             $stmt->close();
         } else {
-            $errors[] = "Failed to prepare SQL statement.";
+            $errors[] = __("failed_to_prepare_sql");
         }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
-    <title>Search for Flights</title>
+    <title><?php echo __("search_flights"); ?></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css"> <!-- Inclure le fichier CSS ici -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <?php include 'header.php'; ?>
 
 <div class="container">
-    <h1 class="text-center my-4">Search for Flights</h1>
+    <h1 class="text-center my-4"><?php echo __("search_flights"); ?></h1>
     <?php
     if (!empty($errors)) {
         echo '<div class="alert alert-danger">';
@@ -88,39 +83,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
     
     <form action="recherche_vols.php" method="GET" class="form-container mx-auto" style="max-width: 600px;">
         <div class="form-group">
-            <label for="depart">Departure City:</label>
-            <input type="text" class="form-control" id="depart" name="depart" placeholder="e.g., New York" required>
-        </div>
-        <div>
-            <label for="depart"><?php echo __("departure_city"); ?></label>
-            <select name="depart" id="depart">
-                <!-- // foreach de tout les airports -->
-                 <?php foreach($results as $result) {
-                 ?><option><?php foreach($result as $name)
-                                        echo $name;?>
-                    </option><?php
-                 }?>
-            </select> 
+            <label for="depart"><?php echo __("departure_city"); ?>:</label>
+            <input type="text" class="form-control" id="depart" name="depart" placeholder="<?php echo __("e.g., New York"); ?>" required>
         </div>
         <div class="form-group">
-            <label for="destination">Destination City:</label>
-            <input type="text" class="form-control" id="destination" name="destination" placeholder="e.g., London" required>
+            <label for="destination"><?php echo __("destination_city"); ?>:</label>
+            <input type="text" class="form-control" id="destination" name="destination" placeholder="<?php echo __("e.g., London"); ?>" required>
         </div>
         <div class="form-group">
-            <label>Trip Type:</label><br>
-            <input type="radio" name="trip_type" value="one-way" checked onclick="toggleReturnDate()"> One-way
-            <input type="radio" name="trip_type" value="round-trip" onclick="toggleReturnDate()"> Round-trip
+            <label><?php echo __("trip_type"); ?>:</label><br>
+            <input type="radio" name="trip_type" value="one-way" checked onclick="toggleReturnDate()"> <?php echo __("one_way"); ?>
+            <input type="radio" name="trip_type" value="round-trip" onclick="toggleReturnDate()"> <?php echo __("round_trip"); ?>
         </div>
         <div class="form-group">
-            <label for="date_depart_start">Departure Date:</label>
+            <label for="date_depart_start"><?php echo __("departure_date"); ?>:</label>
             <input type="date" class="form-control" id="date_depart_start" name="date_depart_start" required>
         </div>
         <div class="form-group" id="return-date-group" style="display:none;">
-            <label for="date_return">Return Date:</label>
+            <label for="date_return"><?php echo __("return_date"); ?>:</label>
             <input type="date" class="form-control" id="date_return" name="date_return">
         </div>
         <div class="form-group">
-            <label for="travelers">Number of Travelers:</label>
+            <label for="travelers"><?php echo __("number_of_travelers"); ?>:</label>
             <select class="form-control" id="travelers" name="travelers" required>
                 <?php for ($i = 1; $i <= 10; $i++): ?>
                     <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -129,25 +113,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
         </div>
         <div class="form-group">
             <input type="checkbox" id="direct_only" name="direct_only">
-            <label for="direct_only">Direct Flights Only</label>
+            <label for="direct_only"><?php echo __("direct_flights_only"); ?></label>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Search</button>
+        <button type="submit" class="btn btn-primary btn-block"><?php echo __("search"); ?></button>
     </form>
     
     <?php if ($searchPerformed && empty($results)): ?>
-        <p class="text-center">No flights found.</p>
+        <p class="text-center"><?php echo __("no_flights_found"); ?></p>
     <?php elseif (!empty($results)): ?>
-        <h2 class="text-center my-4">Available Flights</h2>
+        <h2 class="text-center my-4"><?php echo __("available_flights"); ?></h2>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Flight ID</th>
-                    <th>Departure</th>
-                    <th>Destination</th>
-                    <th>Departure Date</th>
-                    <th>Arrival Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th><?php echo __("flight_id"); ?></th>
+                    <th><?php echo __("departure"); ?></th>
+                    <th><?php echo __("destination"); ?></th>
+                    <th><?php echo __("departure_date"); ?></th>
+                    <th><?php echo __("arrival_date"); ?></th>
+                    <th><?php echo __("status"); ?></th>
+                    <th><?php echo __("action"); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -159,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
                         <td><?php echo $flight['departure_date']; ?></td>
                         <td><?php echo $flight['arrival_date']; ?></td>
                         <td><?php echo $flight['status']; ?></td>
-                        <td><a href="booking.php?flight_id=<?php echo $flight['id']; ?>&travelers=<?php echo $travelers; ?>" class="btn btn-primary">Book</a></td>
+                        <td><a href="booking.php?flight_id=<?php echo $flight['id']; ?>&travelers=<?php echo $travelers; ?>" class="btn btn-primary"><?php echo __("book"); ?></a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
