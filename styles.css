@@ -1,0 +1,115 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    background-image: url('/images/fond.jpg'); /* Assurez-vous que l'image est dans le bon chemin */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #efe9e9;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.text-center {
+    margin-top: 20px;
+    color: #faf5f5;
+}
+
+.form-control {
+    border-radius: 30px;
+    padding: 15px 20px;
+    border: 1px solid #ced4da;
+}
+
+.input-group-text {
+    background-color: #007bff;
+    color: white;
+    border-radius: 30px 0 0 30px;
+}
+
+.input-group .form-control {
+    border-radius: 0 30px 30px 0;
+    border-left: 0;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 30px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-outline-primary {
+    border-radius: 30px;
+}
+
+.btn-outline-primary.active,
+.btn-outline-primary:focus,
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.form-check-label {
+    margin-left: 10px;
+}
+
+.form-check {
+    margin-top: 20px;
+}
+
+.input-group-prepend .btn,
+.input-group-append .btn {
+    border-radius: 50px;
+    padding: 10px 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+.input-group-text i {
+    margin-right: 10px;
+}
+
+.select-group {
+    margin-bottom: 20px;
+}
+
+.select-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.select-group select {
+    width: 100%;
+    padding: 15px;
+    border-radius: 30px;
+    border: 1px solid #ced4da;
+}

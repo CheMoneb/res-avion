@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <title>Booking</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css"> <!-- Assurez-vous d'inclure votre fichier CSS global -->
+    <link rel="stylesheet" href="styles.css"> <!-- Assurez-vous d'inclure votre fichier CSS global -->
 </head>
 <body>
     <?php include 'header.php'; ?>
