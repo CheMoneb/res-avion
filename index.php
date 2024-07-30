@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
     $date_depart_start = trim($_GET['date_depart_start']);
     $trip_type = trim($_GET['trip_type']);
     $date_return = isset($_GET['date_return']) ? trim($_GET['date_return']) : null;
+    $direct_only = isset($_GET['direct_only']) ? true : false; // Ajouter le paramètre pour les vols directs
+    $travelers = isset($_GET['travelers']) ? intval($_GET['travelers']) : 1; // Nombre de voyageurs
 
     // Validation des données du formulaire
     if (empty($depart)) {
@@ -28,18 +30,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
     if ($trip_type == 'round-trip' && empty($date_return)) {
         $errors[] = "Return Date is required for round-trip.";
     }
+    if ($travelers <= 0) {
+        $errors[] = "Number of travelers must be at least 1.";
+    }
 
     if (empty($errors)) {
         // Requête SQL pour rechercher les vols
-        $stmt = $conn->prepare("SELECT * FROM flights WHERE departure_airport = ? AND destination_airport = ? AND departure_date = ?");
-        $stmt->bind_param("sss", $depart, $destination, $date_depart_start);
-        $stmt->execute();
-        $results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
+        $query = "SELECT * FROM vols WHERE departure_airport = ? AND destination_airport = ? AND departure_date = ?";
+        if ($direct_only) {
+            $query .= " AND direct_flight = 1"; // Filtrer les vols directs
+        }
+        $stmt = $conn->prepare($query);
+        if ($stmt) {
+            $stmt->bind_param("sss", $depart, $destination, $date_depart_start);
+            $stmt->execute();
+            $results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+        } else {
+            $errors[] = "Failed to prepare SQL statement.";
+        }
     }
 }
 ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Search for Flights</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Inclure le fichier CSS ici -->
+</head>
+<body>
 <?php include 'header.php'; ?>
 
 <div class="container">
@@ -56,11 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
     <form action="recherche_vols.php" method="GET" class="form-container mx-auto" style="max-width: 600px;">
         <div class="form-group">
             <label for="depart">Departure City:</label>
-            <input type="text" class="form-control" name="depart" required>
+            <input type="text" class="form-control" name="depart" name="depart" placeholder="e.g., New York" required>
+            
         </div>
         <div class="form-group">
             <label for="destination">Destination City:</label>
-            <input type="text" class="form-control" name="destination" required>
+            <input type="text" class="form-control" name="destination" name="destination" placeholder="e.g., London" required>
         </div>
         <div class="form-group">
             <label>Trip Type:</label><br>
@@ -74,6 +97,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
         <div class="form-group" id="return-date-group" style="display:none;">
             <label for="date_return">Return Date:</label>
             <input type="date" class="form-control" name="date_return">
+        </div>
+        <div class="form-group">
+            <label for="travelers">Number of Travelers:</label>
+            <select class="form-control" name="travelers" id="travelers" required>
+                <?php for ($i = 1; $i <= 10; $i++): ?>
+                    <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                <?php endfor; ?>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <input type="checkbox" name="direct_only" id="direct_only">
+            <label for="direct_only">Direct Flights Only</label>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Search</button>
     </form>
@@ -101,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
                         <td><?php echo $flight['departure_date']; ?></td>
                         <td><?php echo $flight['arrival_date']; ?></td>
                         <td><?php echo $flight['status']; ?></td>
-                        <td><a href="booking.php?flight_id=<?php echo $flight['id']; ?>" class="btn btn-primary">Book</a></td>
+                        <td><a href="booking.php?flight_id=<?php echo $flight['id']; ?>&travelers=<?php echo $travelers; ?>" class="btn btn-primary">Book</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -13,6 +13,21 @@ if (isset($_POST['lang'])) {
 }
 
 require_once 'translate.php';
+
+function getFlag($lang) {
+    switch ($lang) {
+        case 'en':
+            return '/images/us.png';
+        case 'fr':
+            return '/images/fr.png';
+        case 'es':
+            return '/images/es.png';
+        case 'it':
+            return '/images/it.png';
+        case 'ar':
+            return '/images/sa.png';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,34 +47,45 @@ require_once 'translate.php';
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="index.php"><?php echo __("home"); ?></a>
+                <a class="nav-link" href="index.php"><?php echo __("Home"); ?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="recherche_vols.php"><?php echo __("search_flights"); ?></a>
+                <a class="nav-link" href="recherche_vols.php"><?php echo __("Search Flights"); ?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="booking.php"><?php echo __("bookings"); ?></a>
+                <a class="nav-link" href="booking.php"><?php echo __("Bookings"); ?></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="vacationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo __("Vacations"); ?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="vacationsDropdown">
+                    <a class="dropdown-item" href="hotels.php"><?php echo __("Hotels"); ?></a>
+                    <a class="dropdown-item" href="car_rental.php"><?php echo __("Car Rental"); ?></a>
+                    <a class="dropdown-item" href="transport.php"><?php echo __("Transport"); ?></a>
+                    <a class="dropdown-item" href="travel_ideas.php"><?php echo __("Travel Ideas"); ?></a>
+                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo __("language"); ?>
+                    <img src="<?php echo getFlag($lang); ?>" alt="Language" class="flag-icon">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <form method="post" id="langForm">
                         <button type="submit" name="lang" value="en" class="dropdown-item">
-                            <img src="path_to_flags/gb.png" alt="English" class="flag-icon"> English
+                            <img src="/images/us.png" alt="English" class="flag-icon"> English
                         </button>
                         <button type="submit" name="lang" value="fr" class="dropdown-item">
-                            <img src="path_to_flags/fr.png" alt="Français" class="flag-icon"> Français
+                            <img src="/images/fr.png" alt="Français" class="flag-icon"> Français
                         </button>
                         <button type="submit" name="lang" value="es" class="dropdown-item">
-                            <img src="path_to_flags/es.png" alt="Español" class="flag-icon"> Español
+                            <img src="/images/es.png" alt="Español" class="flag-icon"> Español
                         </button>
                         <button type="submit" name="lang" value="it" class="dropdown-item">
-                            <img src="path_to_flags/it.png" alt="Italiano" class="flag-icon"> Italiano
+                            <img src="/images/it.png" alt="Italiano" class="flag-icon"> Italiano
                         </button>
                         <button type="submit" name="lang" value="ar" class="dropdown-item">
-                            <img src="path_to_flags/ar.png" alt="العربية" class="flag-icon"> العربية
+                            <img src="/images/sa.png" alt="العربية" class="flag-icon"> العربية
                         </button>
                     </form>
                 </div>
