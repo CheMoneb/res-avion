@@ -5,9 +5,9 @@ error_reporting(E_ALL);
 
 require_once 'db.php';
 require_once 'translate.php';
+require 'get_airports.php';
 
 $errors = [];
-$results = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destination'], $_GET['date_depart_start'], $_GET['trip_type'])) {
     $depart = trim($_GET['depart']);
@@ -68,7 +68,11 @@ include 'header.php';
             <label for="depart"><?php echo __("departure_city"); ?></label>
             <select name="depart" id="depart">
                 <!-- // foreach de tout les airports -->
-                <!-- <option value="volvo">$name</option> -->
+                 <?php foreach($results as $result) {
+                 ?><option><?php foreach($result as $name)
+                                        echo $name;?>
+                    </option><?php
+                 }?>
             </select> 
         </div>
         <div class="form-group">
