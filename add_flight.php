@@ -4,6 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once 'db.php'; // Assurez-vous que ce fichier contient les informations de connexion à la base de données
+require_once 'translate.php';
 
 $errors = [];
 $success = '';
@@ -18,19 +19,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Validation des données du formulaire
     if (empty($departure_airport)) {
-        $errors[] = "Departure Airport is required.";
+        $errors[] = __("Departure Airport is required.");
     }
     if (empty($destination_airport)) {
-        $errors[] = "Destination Airport is required.";
+        $errors[] = __("Destination Airport is required.");
     }
     if (empty($departure_date)) {
-        $errors[] = "Departure Date is required.";
+        $errors[] = __("Departure Date is required.");
     }
     if (empty($arrival_date)) {
-        $errors[] = "Arrival Date is required.";
+        $errors[] = __("Arrival Date is required.");
     }
     if (empty($status)) {
-        $errors[] = "Status is required.";
+        $errors[] = __("Status is required.");
     }
 
     if (empty($errors)) {
@@ -38,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $conn->prepare("INSERT INTO flights (departure_airport, destination_airport, departure_date, arrival_date, direct_flight, status) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssis", $departure_airport, $destination_airport, $departure_date, $arrival_date, $direct_flight, $status);
         if ($stmt->execute()) {
-            $success = "Flight added successfully!";
+            $success = __("Flight added successfully!");
         } else {
-            $errors[] = "Failed to add flight.";
+            $errors[] = __("Failed to add flight.");
         }
         $stmt->close();
     }
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Add Flight</title>
+    <title><?php echo __("Add Flight"); ?></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -59,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include 'header.php'; ?>
 
 <div class="container">
-    <h1 class="text-center my-4">Add Flight</h1>
+    <h1 class="text-center my-4"><?php echo __("Add Flight"); ?></h1>
     <?php
     if (!empty($errors)) {
         echo '<div class="alert alert-danger">';
@@ -77,32 +78,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ?>
     <form action="add_flight.php" method="POST" class="form-container mx-auto" style="max-width: 600px;">
         <div class="form-group">
-            <label for="departure_airport">Departure Airport:</label>
+            <label for="departure_airport"><?php echo __("Departure Airport"); ?>:</label>
             <input type="text" class="form-control" id="departure_airport" name="departure_airport" required>
         </div>
         <div class="form-group">
-            <label for="destination_airport">Destination Airport:</label>
+            <label for="destination_airport"><?php echo __("Destination Airport"); ?>:</label>
             <input type="text" class="form-control" id="destination_airport" name="destination_airport" required>
         </div>
         <div class="form-group">
-            <label for="departure_date">Departure Date:</label>
+            <label for="departure_date"><?php echo __("Departure Date"); ?>:</label>
             <input type="date" class="form-control" id="departure_date" name="departure_date" required>
         </div>
         <div class="form-group">
-            <label for="arrival_date">Arrival Date:</label>
+            <label for="arrival_date"><?php echo __("Arrival Date"); ?>:</label>
             <input type="date" class="form-control" id="arrival_date" name="arrival_date" required>
         </div>
         <div class="form-group">
-            <label for="status">Status:</label>
-            <input type="text" class="form-control" id="status" name="status" required>
+            <label for="status"><?php echo __("Status"); ?>:</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="Scheduled"><?php echo __("Scheduled"); ?></option>
+                <option value="Delayed"><?php echo __("Delayed"); ?></option>
+                <option value="Cancelled"><?php echo __("Cancelled"); ?></option>
+            </select>
         </div>
         <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="direct_flight" name="direct_flight">
-            <label class="form-check-label" for="direct_flight">Direct Flight</label>
+            <label class="form-check-label" for="direct_flight"><?php echo __("Direct Flight"); ?></label>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Add Flight</button>
+        <button type="submit" class="btn btn-primary btn-block"><?php echo __("Add Flight"); ?></button>
     </form>
 </div>
+<?php include 'footer.php'; ?>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

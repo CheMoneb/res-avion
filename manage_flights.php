@@ -14,9 +14,9 @@ if (isset($_POST['delete_flight'])) {
     $stmt = $conn->prepare("DELETE FROM flights WHERE id = ?");
     $stmt->bind_param("i", $flight_id);
     if ($stmt->execute()) {
-        $success = "Flight deleted successfully!";
+        $success = __("flight_deleted_successfully");
     } else {
-        $errors[] = "Failed to delete flight.";
+        $errors[] = __("failed_to_delete_flight");
     }
     $stmt->close();
 }
@@ -32,14 +32,14 @@ if (isset($_POST['update_flight'])) {
     $status = trim($_POST['status']);
 
     if (empty($departure_airport) || empty($destination_airport) || empty($departure_date) || empty($arrival_date) || empty($status)) {
-        $errors[] = "All fields are required.";
+        $errors[] = __("all_fields_required");
     } else {
         $stmt = $conn->prepare("UPDATE flights SET departure_airport = ?, destination_airport = ?, departure_date = ?, arrival_date = ?, direct_flight = ?, status = ? WHERE id = ?");
-        $stmt->bind_param("sssssii", $departure_airport, $destination_airport, $departure_date, $arrival_date, $direct_flight, $status, $flight_id);
+        $stmt->bind_param("ssssisi", $departure_airport, $destination_airport, $departure_date, $arrival_date, $direct_flight, $status, $flight_id);
         if ($stmt->execute()) {
-            $success = "Flight updated successfully!";
+            $success = __("flight_updated_successfully");
         } else {
-            $errors[] = "Failed to update flight.";
+            $errors[] = __("failed_to_update_flight");
         }
         $stmt->close();
     }
@@ -61,7 +61,7 @@ if ($stmt) {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Manage Flights</title>
+    <title><?php echo __("manage_flights"); ?></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -69,7 +69,7 @@ if ($stmt) {
 <?php include 'header.php'; ?>
 
 <div class="container">
-    <h1 class="text-center my-4">Manage Flights</h1>
+    <h1 class="text-center my-4"><?php echo __("manage_flights"); ?></h1>
     <?php
     if (!empty($errors)) {
         echo '<div class="alert alert-danger">';
@@ -88,14 +88,14 @@ if ($stmt) {
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Departure Airport</th>
-                <th>Destination Airport</th>
-                <th>Departure Date</th>
-                <th>Arrival Date</th>
-                <th>Direct Flight</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th><?php echo __("ID"); ?></th>
+                <th><?php echo __("departure_airport"); ?></th>
+                <th><?php echo __("destination_airport"); ?></th>
+                <th><?php echo __("departure_date"); ?></th>
+                <th><?php echo __("arrival_date"); ?></th>
+                <th><?php echo __("direct_flight"); ?></th>
+                <th><?php echo __("status"); ?></th>
+                <th><?php echo __("actions"); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -106,14 +106,14 @@ if ($stmt) {
                     <td><?php echo $flight['destination_airport']; ?></td>
                     <td><?php echo $flight['departure_date']; ?></td>
                     <td><?php echo $flight['arrival_date']; ?></td>
-                    <td><?php echo $flight['direct_flight'] ? 'Yes' : 'No'; ?></td>
+                    <td><?php echo $flight['direct_flight'] ? __("yes") : __("no"); ?></td>
                     <td><?php echo $flight['status']; ?></td>
                     <td>
                         <form action="manage_flights.php" method="post" style="display:inline-block;">
                             <input type="hidden" name="flight_id" value="<?php echo $flight['id']; ?>">
-                            <button type="submit" name="delete_flight" class="btn btn-danger btn-sm">Delete</button>
+                            <button type="submit" name="delete_flight" class="btn btn-danger btn-sm"><?php echo __("delete"); ?></button>
                         </form>
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editFlightModal<?php echo $flight['id']; ?>">Edit</button>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editFlightModal<?php echo $flight['id']; ?>"><?php echo __("edit"); ?></button>
                     </td>
                 </tr>
 
@@ -122,7 +122,7 @@ if ($stmt) {
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editFlightModalLabel<?php echo $flight['id']; ?>">Edit Flight</h5>
+                                <h5 class="modal-title" id="editFlightModalLabel<?php echo $flight['id']; ?>"><?php echo __("edit"); ?></h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -131,30 +131,34 @@ if ($stmt) {
                                 <form action="manage_flights.php" method="post">
                                     <input type="hidden" name="flight_id" value="<?php echo $flight['id']; ?>">
                                     <div class="form-group">
-                                        <label for="departure_airport">Departure Airport:</label>
+                                        <label for="departure_airport"><?php echo __("departure_airport"); ?>:</label>
                                         <input type="text" class="form-control" id="departure_airport" name="departure_airport" value="<?php echo $flight['departure_airport']; ?>" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="destination_airport">Destination Airport:</label>
+                                        <label for="destination_airport"><?php echo __("destination_airport"); ?>:</label>
                                         <input type="text" class="form-control" id="destination_airport" name="destination_airport" value="<?php echo $flight['destination_airport']; ?>" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="departure_date">Departure Date:</label>
+                                        <label for="departure_date"><?php echo __("departure_date"); ?>:</label>
                                         <input type="date" class="form-control" id="departure_date" name="departure_date" value="<?php echo $flight['departure_date']; ?>" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="arrival_date">Arrival Date:</label>
+                                        <label for="arrival_date"><?php echo __("arrival_date"); ?>:</label>
                                         <input type="date" class="form-control" id="arrival_date" name="arrival_date" value="<?php echo $flight['arrival_date']; ?>" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="status">Status:</label>
-                                        <input type="text" class="form-control" id="status" name="status" value="<?php echo $flight['status']; ?>" required>
+                                        <label for="status"><?php echo __("status"); ?>:</label>
+                                        <select class="form-control" id="status" name="status" required>
+                                            <option value="Scheduled" <?php echo ($flight['status'] == 'Scheduled') ? 'selected' : ''; ?>><?php echo __("Scheduled"); ?></option>
+                                            <option value="Delayed" <?php echo ($flight['status'] == 'Delayed') ? 'selected' : ''; ?>><?php echo __("Delayed"); ?></option>
+                                            <option value="Cancelled" <?php echo ($flight['status'] == 'Cancelled') ? 'selected' : ''; ?>><?php echo __("Cancelled"); ?></option>
+                                        </select>
                                     </div>
                                     <div class="form-group form-check">
                                         <input type="checkbox" class="form-check-input" id="direct_flight" name="direct_flight" <?php echo $flight['direct_flight'] ? 'checked' : ''; ?>>
-                                        <label class="form-check-label" for="direct_flight">Direct Flight</label>
+                                        <label class="form-check-label" for="direct_flight"><?php echo __("direct_flight"); ?></label>
                                     </div>
-                                    <button type="submit" name="update_flight" class="btn btn-primary">Update Flight</button>
+                                    <button type="submit" name="update_flight" class="btn btn-primary"><?php echo __("update_flight"); ?></button>
                                 </form>
                             </div>
                         </div>
@@ -164,6 +168,7 @@ if ($stmt) {
         </tbody>
     </table>
 </div>
+<?php include 'footer.php'; ?>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

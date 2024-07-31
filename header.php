@@ -13,23 +13,6 @@ if (isset($_POST['lang'])) {
 }
 
 require_once 'translate.php';
-
-function getFlag($lang) {
-    switch ($lang) {
-        case 'en':
-            return '/images/us.png';
-        case 'fr':
-            return '/images/fr.png';
-        case 'es':
-            return '/images/es.png';
-        case 'it':
-            return '/images/it.png';
-        case 'ar':
-            return '/images/sa.png';
-        default:
-            return '/images/us.png';
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +22,14 @@ function getFlag($lang) {
     <title><?php echo __("search_flights"); ?></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .flag-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -52,7 +43,7 @@ function getFlag($lang) {
                 <a class="nav-link" href="index.php"><?php echo __("home"); ?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="recherche_vols.php"><?php echo __("search_flights"); ?></a>
+                <a class="nav-link" href="recherche_vols.php"><?php echo __("Flights"); ?></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="booking.php"><?php echo __("bookings"); ?></a>
@@ -69,34 +60,40 @@ function getFlag($lang) {
                 </div>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="flightsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="manageFlightsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo __("manage_flights"); ?>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="flightsDropdown">
-                    <a class="dropdown-item" href="add_flight.php"><?php echo __("add_flight"); ?></a>
+                <div class="dropdown-menu" aria-labelledby="manageFlightsDropdown">
                     <a class="dropdown-item" href="manage_flights.php"><?php echo __("manage_flights"); ?></a>
+                    <a class="dropdown-item" href="add_flight.php"><?php echo __("add_flight"); ?></a>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="promotions.php"><?php echo __("Promotion"); ?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="support.php"><?php echo __("customer_support"); ?></a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php echo getFlag($lang); ?>" alt="Language" class="flag-icon">
+                    <img src="/images/<?php echo $lang; ?>.png" alt="Language" class="flag-icon">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <form method="post" id="langForm">
                         <button type="submit" name="lang" value="en" class="dropdown-item">
-                            <img src="/images/us.png" alt="English" class="flag-icon"> English
+                            <img src="/images/en.png" alt="English" class="flag-icon">
                         </button>
                         <button type="submit" name="lang" value="fr" class="dropdown-item">
-                            <img src="/images/fr.png" alt="Français" class="flag-icon"> Français
+                            <img src="/images/fr.png" alt="Français" class="flag-icon">
                         </button>
                         <button type="submit" name="lang" value="es" class="dropdown-item">
-                            <img src="/images/es.png" alt="Español" class="flag-icon"> Español
+                            <img src="/images/es.png" alt="Español" class="flag-icon">
                         </button>
                         <button type="submit" name="lang" value="it" class="dropdown-item">
-                            <img src="/images/it.png" alt="Italiano" class="flag-icon"> Italiano
+                            <img src="/images/it.png" alt="Italiano" class="flag-icon">
                         </button>
                         <button type="submit" name="lang" value="ar" class="dropdown-item">
-                            <img src="/images/sa.png" alt="العربية" class="flag-icon"> العربية
+                            <img src="/images/ar.png" alt="العربية" class="flag-icon">
                         </button>
                     </form>
                 </div>
@@ -104,3 +101,9 @@ function getFlag($lang) {
         </ul>
     </div>
 </nav>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

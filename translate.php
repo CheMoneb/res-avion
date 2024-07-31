@@ -1,12 +1,15 @@
 <?php
-function loadTranslations($lang) {
-    $filePath = __DIR__ . "/translations_$lang.json";
-    if (file_exists($filePath)) {
-        $jsonContent = file_get_contents($filePath);
-        return json_decode($jsonContent, true);
-    } else {
-        return [];
-    }
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$lang = $_SESSION['lang'] ?? 'en';
+
+if (isset($_POST['lang'])) {
+    $lang = $_POST['lang'];
+    $_SESSION['lang'] = $lang;
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
 }
 
 function __($key) {
@@ -14,9 +17,10 @@ function __($key) {
     return $translations[$key] ?? $key;
 }
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+$filePath = __DIR__ . "/translations_$lang.json";
+if (file_exists($filePath)) {
+    $translations = json_decode(file_get_contents($filePath), true);
+} else {
+    $translations = [];
 }
-$lang = $_SESSION['lang'] ?? 'en';
-$translations = loadTranslations($lang);
 ?>
