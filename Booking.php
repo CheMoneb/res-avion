@@ -5,14 +5,18 @@ var_dump($_SESSION);
 $errors = [];
 $reservation = null;
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $reservation_number = trim($_POST['reservation_number']);
+    $reservation_reference = trim($_POST['reservation_reference']);
     $email = trim($_POST['email']);
     $last_name = trim($_POST['last_name']);
 
     // Validation des données du formulaire
-    if (empty($reservation_number)) {
-        $errors[] = __("reservation_number_is_required");
+    if (empty($reservation_reference)) {
+        $errors[] = __("reservation_reference_is_required");
     }
     if (empty($email)) {
         $errors[] = __("email_is_required");
@@ -23,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($errors)) {
         // Requête SQL pour rechercher la réservation
-        $stmt = $conn->prepare("SELECT * FROM reservations WHERE reservation_number = ? AND email = ? AND last_name = ?");
+        $stmt = $conn->prepare("SELECT * FROM ma_reservation WHERE reservation_reference = ? AND email = ? AND last_name = ?");
         if ($stmt) {
-            $stmt->bind_param("sss", $reservation_number, $email, $last_name);
+            $stmt->bind_param("sss", $reservation_reference, $email, $last_name);
             $stmt->execute();
             $result = $stmt->get_result();
             $reservation = $result->fetch_assoc();
@@ -66,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <form action="find_reservation.php" method="POST" class="form-container mx-auto" style="max-width: 600px;">
         <div class="form-group">
-            <label for="reservation_number"><?php echo __("reservation_number"); ?></label>
-            <input type="text" class="form-control" id="reservation_number" name="reservation_number" placeholder="e.g., ABC123" required>
+            <label for="reservation_reference"><?php echo __("reservation_reference"); ?></label>
+            <input type="text" class="form-control" id="reservation_reference" name="reservation_reference" placeholder="e.g., ABC123" required>
         </div>
         <div class="form-group">
             <label for="email"><?php echo __("email"); ?></label>
