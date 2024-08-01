@@ -1,31 +1,28 @@
 <?php
-
 require 'db.php';
 
-$query = $conn->prepare("SELECT `username`, `password`, `email` FROM `users`
-        WHERE `username` = ?
-        AND `password` = ?
-        AND `email` = ?");
-$query->bind_param('sss', $username, $password, $email);
+
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $email = $_POST['email'];
+    $query = $conn->prepare("SELECT * FROM `users`
+        WHERE `username` = ?
+        AND `password` = ?
+        AND `email` = ?");
+    $query->bind_param('sss', $username, $password, $email);
     $query->execute();
-    $result = $mysqli->query($query);
-    $user = $result->fetch_array(MYSQLI_ASSOC);
-    if($user === false) {
+    $result = $query->get_result();
+    $user = $result->fetch_all(MYSQLI_ASSOC);
+    if(!$user) {
         header('location:connection_compte.php');
-    }
-    else {
-        if($username == $user['username'])
-            if($username == $user['password'])
-                if($username == $user['email'])
-                    echo "Vous êtes connecté";
-                else {
-                    header('location:connection_compte.php');
-                }
+    } else {
+        foreach($user as $u) {
+            $_SESSION['user_id'] = $u['id'];
+            $_SESSION['username'] = $u['username'];
+        }
+        header('location:Booking.php');
     }
 }
 ?>
