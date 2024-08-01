@@ -35,6 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Se connecter</title>
 </head>
 <body>
+    <?php include 'header.php';?>
     <h1>Se connecter</h1>
     <form action="connection_compte.php" method="post">
         <label for="username">Nom d'utilisateur:</label>
