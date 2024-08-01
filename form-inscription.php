@@ -23,6 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>S'inscrire</title>
 </head>
 <body>
+    <?php include 'header.php';?>
     <h1>S'inscrire</h1>
     <form action="form-inscription.php" method="POST">
         <label for="username">Nom d'utilisateur:</label>
