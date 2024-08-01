@@ -80,6 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             margin-top: 50px;
         }
+        .swap-button {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -99,11 +107,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
     
     <form action="recherche_vols.php" method="GET" class="form-container mx-auto" style="max-width: 800px;">
         <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-5">
                 <label for="depart"><?php echo __("Departure City"); ?>:</label>
                 <input type="text" class="form-control" id="depart" name="depart" placeholder="e.g., New York" required>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-2 text-center d-flex align-items-end justify-content-center">
+                <!-- Bouton Swap -->
+                <button type="button" class="btn btn-outline-primary swap-button" onclick="swapLocations()">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+            </div>
+            <div class="form-group col-md-5">
                 <label for="destination"><?php echo __("Destination City"); ?>:</label>
                 <input type="text" class="form-control" id="destination" name="destination" placeholder="e.g., London" required>
             </div>
@@ -162,42 +176,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['depart'], $_GET['destina
         </div>
         <button type="submit" class="btn btn-primary btn-block"><?php echo __("Search"); ?></button>
     </form>
-    
     <?php if ($searchPerformed && empty($results)): ?>
-        <p class="text-center"><?php echo __("No flights found."); ?></p>
-    <?php elseif (!empty($results)): ?>
-        <h2 class="text-center my-4"><?php echo __("Available Flights"); ?></h2>
-        <table class="table table-striped">
-            <thead>
+    <p class="text-center"><?php echo __("No flights found."); ?></p>
+<?php elseif (!empty($results)): ?>
+    <h2 class="text-center my-4"><?php echo __("Available Flights"); ?></h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th><?php echo __("Flight ID"); ?></th>
+                <th><?php echo __("Departure"); ?></th>
+                <th><?php echo __("Destination"); ?></th>
+                <th><?php echo __("Departure Date"); ?></th>
+                <th><?php echo __("Arrival Date"); ?></th>
+                <th><?php echo __("Status"); ?></th>
+                <th><?php echo __("Action"); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($results as $flight): ?>
                 <tr>
-                    <th><?php echo __("Flight ID"); ?></th>
-                    <th><?php echo __("Departure"); ?></th>
-                    <th><?php echo __("Destination"); ?></th>
-                    <th><?php echo __("Departure Date"); ?></th>
-                    <th><?php echo __("Arrival Date"); ?></th>
-                    <th><?php echo __("Status"); ?></th>
-                    <th><?php echo __("Action"); ?></th>
+                    <td><?php echo $flight['id']; ?></td>
+                    <td><?php echo $flight['departure_airport']; ?></td>
+                    <td><?php echo $flight['destination_airport']; ?></td>
+                    <td><?php echo $flight['departure_date']; ?></td>
+                    <td><?php echo $flight['arrival_date']; ?></td>
+                    <td><?php echo $flight['status']; ?></td>
+                    <td><a href="booking.php?flight_id=<?php echo $flight['id']; ?>&adults=<?php echo $adults; ?>&children=<?php echo $children; ?>&infants=<?php echo $infants; ?>" class="btn btn-primary"><?php echo __("Book"); ?></a></td>
                 </tr>
-            </thead>
-            <tbody>
-            
-                <?php foreach ($results as $flight): ?>
-                    <tr>
-                        <td><?php echo $flight['id']; ?></td>
-                        <td><?php echo $flight['departure_airport']; ?></td>
-                        <td><?php echo $flight['destination_airport']; ?></td>
-                        <td><?php echo $flight['departure_date']; ?></td>
-                        <td><?php echo $flight['arrival_date']; ?></td>
-                        <td><?php echo $flight['status']; ?></td>
-                        <td><a href="booking.php?flight_id=<?php echo $flight['id']; ?>&adults=<?php echo $adults; ?>&children=<?php echo $children; ?>&infants=<?php echo $infants; ?>" class="btn btn-primary"><?php echo __("Book"); ?></a></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php endif; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
 </div>
 <?php include 'footer.php'; ?>
 <script>
+    function swapLocations() {
+        const departInput = document.getElementById('depart');
+        const destinationInput = document.getElementById('destination');
+        
+        // Swap the values
+        const temp = departInput.value;
+        departInput.value = destinationInput.value;
+        destinationInput.value = temp;
+    }
+
     function toggleReturnDate() {
         const returnDateGroup = document.getElementById('return-date-group');
         const tripType = document.querySelector('input[name="trip_type"]:checked').value;
