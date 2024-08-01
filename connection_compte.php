@@ -1,18 +1,30 @@
 <?php
 require 'db.php';
 
-$stmt = $conn->prepare("INSERT INTO users (`username`, `password`, `email`)
-VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $username, $password, $email);
+
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $email = $_POST['email'];
-    $stmt->execute();
-    header('location:compte_cree.php');
+    $query = $conn->prepare("SELECT * FROM `users`
+        WHERE `username` = ?
+        AND `password` = ?
+        AND `email` = ?");
+    $query->bind_param('sss', $username, $password, $email);
+    $query->execute();
+    $result = $query->get_result();
+    $user = $result->fetch_all(MYSQLI_ASSOC);
+    if(!$user) {
+        header('location:connection_compte.php');
+    } else {
+        foreach($user as $u) {
+            $_SESSION['user_id'] = $u['id'];
+            $_SESSION['username'] = $u['username'];
+        }
+        header('location:Booking.php');
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -20,11 +32,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S'inscrire</title>
+    <title>Se connecter</title>
 </head>
 <body>
-    <h1>S'inscrire</h1>
-    <form action="form-inscription.php" method="POST">
+    <h1>Se connecter</h1>
+    <form action="connection_compte.php" method="post">
         <label for="username">Nom d'utilisateur:</label>
         <input type="text" name="username">
         <label for="password">Mot de passe:</label>
