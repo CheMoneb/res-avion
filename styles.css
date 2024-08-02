@@ -10,7 +10,7 @@ html, body {
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f8f9fa;
-    background-image: url('/images/fond.jpg'); /* Assurez-vous que l'image est dans le bon chemin */
+    background-image: url('/images/yatilunpilote.jpg'); /* Assurez-vous que l'image est dans le bon chemin */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
