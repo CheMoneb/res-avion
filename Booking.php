@@ -1,7 +1,7 @@
 <?php
 require_once 'db.php'; // Assurez-vous que ce fichier contient les informations de connexion à la base de données
 require_once 'translate.php';
-var_dump($_SESSION);
+
 $errors = [];
 $reservation = null;
 
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     ?>
 
-    <form action="find_reservation.php" method="POST" class="form-container mx-auto" style="max-width: 600px;">
+    <form action="booking.php" method="POST" class="form-container mx-auto" style="max-width: 600px;">
         <div class="form-group">
             <label for="reservation_reference"><?php echo __("reservation_reference"); ?></label>
             <input type="text" class="form-control" id="reservation_reference" name="reservation_reference" placeholder="e.g., ABC123" required>

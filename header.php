@@ -19,7 +19,7 @@ require_once 'translate.php';
 <html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo __("search_flights"); ?></title>
+    <title><?php echo __("title"); ?></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -28,6 +28,9 @@ require_once 'translate.php';
             height: 30px;
             border-radius: 50%;
             object-fit: cover;
+        }
+        .navbar-nav .nav-link {
+            font-size: 0.85rem; /* Réduit la taille de la police des éléments du menu */
         }
     </style>
 </head>
@@ -68,6 +71,15 @@ require_once 'translate.php';
                     <a class="dropdown-item" href="add_flight.php"><?php echo __("add_flight"); ?></a>
                 </div>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="manageHotelsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo __("manage_hotels"); ?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="manageHotelsDropdown">
+                    <a class="dropdown-item" href="manage_hotels.php"><?php echo __("manage_hotels"); ?></a>
+                    <a class="dropdown-item" href="add_hotel.php"><?php echo __("add_hotel"); ?></a>
+                </div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="promotions.php"><?php echo __("Promotion"); ?></a>
             </li>
@@ -76,17 +88,24 @@ require_once 'translate.php';
             </li>
             <?php if(empty($_SESSION['user_id'])) { ?>
             <li class="nav-item">
-                <a class="nav-link" href="connection_compte.php"><?php echo __("Se connecter"); ?></a>
+                <a class="nav-link" href="connection_compte.php"><?php echo __("login"); ?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="form-inscription.php"><?php echo __("S'inscrire"); ?></a>
+                <a class="nav-link" href="form-inscription.php"><?php echo __("register"); ?></a>
             </li>
-            <?php } ?>
-            <?php if(!empty($_SESSION['user_id'])) { ?>
-            <li class="nav-item">
-                <a class="nav-link" href="deconnection.php"><?php echo __("Se déconnecter"); ?></a>
+            <?php } else { ?>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo htmlspecialchars($_SESSION['firstname']) . ' ' . htmlspecialchars($_SESSION['lastname']); ?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="account.php"><?php echo __("your_account"); ?></a>
+                    <a class="dropdown-item" href="ma_reservation.php"><?php echo __("my_reservations"); ?></a>
+                    <a class="dropdown-item" href="help.php"><?php echo __("help"); ?></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="deconnection.php"><?php echo __("logout"); ?></a>
+                </div>
             </li>
-            <h1><?php echo $_SESSION['username'] ?></h1>
             <?php } ?>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
