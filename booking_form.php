@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $adults = $_POST['adults'];
     $children = $_POST['children'];
     $infants = $_POST['infants'];
-    $pets = $_POST['pets'];
+    
     
     // Générer une référence de réservation unique
     $reservation_reference = bin2hex(random_bytes(8));
@@ -48,8 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($errors)) {
-        $stmt = $conn->prepare("INSERT INTO reservations (flight_id, user_id, firstname, lastname, email, phone, reservation_reference, adults, children, infants, pets) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param('iisssssiiii', $flight_id, $user_id, $firstname, $lastname, $email, $phone, $reservation_reference, $adults, $children, $infants, $pets);
+        $stmt = $conn->prepare("INSERT INTO reservations (flight_id, user_id, last_name,first_name, email, phone, reservation_reference, adults, children, infants) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+        $stmt->bind_param('iisssssiii', $flight_id, $user_id, $lastname, $firstname, $email, $phone, $reservation_reference, $adults, $children, $infants );
         if ($stmt->execute()) {
             $success_message = __("Booking successful!");
         } else {
@@ -131,10 +131,7 @@ $stmt->close();
             <label for="infants"><?php echo __("Number of Infants"); ?>:</label>
             <input type="number" name="infants" class="form-control" id="infants" required>
         </div>
-        <div class="form-group">
-            <label for="pets"><?php echo __("Number of Pets"); ?>:</label>
-            <input type="number" name="pets" class="form-control" id="pets" required>
-        </div>
+        
         <button type="submit" class="btn btn-primary btn-block"><?php echo __("Book Now"); ?></button>
     </form>
 </div>
