@@ -176,7 +176,51 @@
   "privacy_policy": "Politique de confidentialité",
   "terms_of_use": "Conditions d'utilisation",
   "cookie_policy": "Politique de cookies",
-  "follow_us": "Suivez-nous"
+  "follow_us": "Suivez-nous",
+  
+    "username": "Nom d'utilisateur:",
+    "password": "Mot de passe:",
+    "email_address": "Adresse e-mail:",
+    "first_name": "Prénom:",
+
+    "phone_number": "Numéro de téléphone:",
+    "send": "Envoyer",
+    "login": "Se connecter",
+    "register": "S'inscrire",
+   
+    "your_account": "Votre compte",
+    "help": "Help",
+    "logout": "Se déconnecter",
+    "Manage Hotels": "Gérer les Hôtels",
+        "Hotel deleted successfully.": "Hôtel supprimé avec succès.",
+        "Failed to delete hotel.": "Échec de la suppression de l'hôtel.",
+       
+        "Location": "Emplacement",
+        "manage_hotels": "Gérer les Hôtels",
+        "reservation_reference": "Reservation Reference",
+        "add_hotel": "Ajouter un hôtel",
+        "Add Hotel": "Ajouter un hôtel",
+        "my_reservations": "Mes Réservations",
+      
+        "Are you sure you want to delete this hotel?": "Êtes-vous sûr de vouloir supprimer cet hôtel ?",
+       
+        "First name is required.": "Le prénom est requis.",
+        "Last name is required.": "Le nom de famille est requis.",
+        "Email is required.": "L'adresse e-mail est requise.",
+        "Phone number is required.": "Le numéro de téléphone est requis.",
+      
+        "Failed to book the flight.": "Échec de la réservation du vol.",
+        "Book a Flight": "Réserver un vol",
+   
+        "First name": "Prénom",
+        "Last name": "Nom de famille",
+        "Email": "E-mail",
+        "Phone number": "Numéro de téléphone",
+        "Number of Adults": "Nombre d'adultes",
+        "Number of Children": "Nombre d'enfants",
+        "Number of Infants": "Nombre de nourrissons",
+        "Number of Pets": "Nombre d'animaux de compagnie",
+        "Book Now": "Réserver maintenant"
 
     
 }

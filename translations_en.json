@@ -150,7 +150,49 @@
   "privacy_policy": "Privacy Policy",
   "terms_of_use": "Terms of Use",
   "cookie_policy": "Cookie Policy",
-  "follow_us": "Follow Us"
+  "follow_us": "Follow Us",
+
+    "username": "Username:",
+    "password": "Password:",
+    "email_address": "Email address:",
+    "first_name": "First Name:",
+  
+    "phone_number": "Phone Number:",
+    "send": "Send",
+    "login": "Login",
+    "register": "Register",
+
+    "your_account": "Your Account",
+    "help": "Help",
+    "logout": "Logout",
+    "Hotel deleted successfully.": "Hotel deleted successfully.",
+        "Failed to delete hotel.": "Failed to delete hotel.",
+        "Manage Hotels": "Manage Hotels",  
+        "Location": "Location",
+        "manage_hotels": "Manage Hotels",
+        "reservation_reference": "Reservation Reference",
+       "add_hotel": "Add Hotel",
+      "Add Hotel":  "Add Hotel",
+      "my_reservations": "My Reservations",
+        "Are you sure you want to delete this hotel?": "Are you sure you want to delete this hotel?",
+       
+        "First name is required.": "First name is required.",
+        "Last name is required.": "Last name is required.",
+        "Email is required.": "Email is required.",
+        "Phone number is required.": "Phone number is required.",
+     
+        "Failed to book the flight.": "Failed to book the flight.",
+        "Book a Flight": "Book a Flight",
+      
+        "First name": "First name",
+        "Last name": "Last name",
+        "Email": "Email",
+        "Phone number": "Phone number",
+        "Number of Adults": "Number of Adults",
+        "Number of Children": "Number of Children",
+        "Number of Infants": "Number of Infants",
+        "Number of Pets": "Number of Pets",
+        "Book Now": "Book Now"
   
      
 }
